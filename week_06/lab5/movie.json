@@ -1,0 +1,16 @@
+{
+    "movie": [
+        {
+            "name" : "Kingdom I",
+            "salesAmt": "1504788500"
+        },
+        {
+            "name" : "Kingdom II",
+            "salesAmt": "2000000000"
+        },
+        {
+            "name" : "Kingdom III",
+            "salesAmt": "4000000000"
+        }
+    ]
+}
