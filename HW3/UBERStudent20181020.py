@@ -4,6 +4,7 @@ import sys
 from datetime import date
 
 weekday = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+info = []; values = []
 uber = dict()
 
 try:
@@ -12,23 +13,26 @@ try:
         rows = data.split("\n")
 
         for row in rows:
-            info = row.split(",")
-            d = list(map(int, info[1].split("/")))
+            element = row.split(",")
+            d = list(map(int, element[1].split("/")))
             day = weekday[date(d[2], d[0], d[1]).weekday()]
-            s = info[0] + "," + day
-
-            vehicles = 0; trips = 0
-            if s not in uber:
-                uber[s] = info[2] + "," + info[3]
-            else:
-                v_t = list(map(int, uber.get(s).split(",")))
-                vehicles = v_t[0] + int(info[2])
-                trips = v_t[1] + int(info[3])
-                uber[s] = str(vehicles) + "," + str(trips)
+            info.append(element[0] + "," + day)
+            values.append(element[2] + "," + element[3])
 
 except FileNotFoundError as e:
     print("File Not Found")
 
-with open("output2.txt", "wt") as wf:
+for i, v in zip(info, values):
+    vehicles = 0; trips = 0
+    if i not in uber:
+        uber[i] = v
+    elif i in uber:
+        vt_values = list(map(int, v.split(",")))
+        vt_uber = list(map(int, uber.get(i).split(",")))
+        vehicles = vt_uber[0] + vt_values[0]
+        trips = vt_uber[1] + vt_values[1]
+        uber[i] = str(vehicles) + "," + str(trips)
+
+with open(sys.argv[2], "wt") as wf:
     for i, j in zip(uber.keys(), uber.values()):
         wf.write("%s %s\n" % (i, j))
