@@ -17,17 +17,18 @@ try:
             day = weekday[date(d[2], d[0], d[1]).weekday()]
             s = info[0] + "," + day
 
+            vehicles = 0; trips = 0
             if s not in uber:
                 uber[s] = info[2] + "," + info[3]
             else:
-                v_t = uber.get(s).split(",")
-                vehicles = int(v_t[0]) + int(info[2])
-                trips = int(v_t[1]) + int(info[3])
+                v_t = list(map(int, uber.get(s).split(",")))
+                vehicles = v_t[0] + int(info[2])
+                trips = v_t[1] + int(info[3])
                 uber[s] = str(vehicles) + "," + str(trips)
 
 except FileNotFoundError as e:
     print("File Not Found")
 
-with open(sys.argv[2], "wt") as wf:
+with open("output2.txt", "wt") as wf:
     for i, j in zip(uber.keys(), uber.values()):
         wf.write("%s %s\n" % (i, j))
