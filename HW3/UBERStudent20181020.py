@@ -36,4 +36,5 @@ for i, v_info, t_info in zip(info, v, t):
 
 with open(sys.argv[2], "wt") as wf:
     for i, j, k in zip(uber_v.keys(), uber_v.values(), uber_t.values()):
-        wf.write("%s %d,%d\n" % (i, j, k))
+        key = i.split(",")
+        wf.write("%s,%s %d,%d\n" % (key[0], key[1], j, k))
