@@ -26,15 +26,15 @@ except FileNotFoundError as e:
 for i, v_info, t_info in zip(info, v, t):
     if i not in uber_v:
         uber_v[i] = v_info
-    else:
+    elif i in uber_v:
         uber_v[i] += v_info
     if i not in uber_t:
         uber_t[i] = t_info
-    else:
+    elif i in uber_t:
         uber_t[i] += t_info
 
 
 with open(sys.argv[2], "wt") as wf:
-    for i, j, k in zip(uber_v.keys(), uber_v.values(), uber_t.values()):
+    for i, j in uber_v.items():
         key = i.split(",")
-        wf.write("%s,%s %d,%d\n" % (key[0], key[1], j, k))
+        wf.write("%s,%s %d,%d\n" % (key[0], key[1], j, uber_t.get(i)))
