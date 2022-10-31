@@ -19,11 +19,11 @@ try:
 
             if info not in uber_v:
                 uber_v[info] = int(element[2])
-            elif info in uber_v:
+            else:
                 uber_v[info] += int(element[2])
             if info not in uber_t:
                 uber_t[info] = int(element[3])
-            elif info in uber_t:
+            else:
                 uber_t[info] += int(element[3])
 
 except FileNotFoundError as e:
