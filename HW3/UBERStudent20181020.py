@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 
 import sys
-from datetime import date
+import calendar
 
 weekday = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
-info = []; v = []; t = []
-uber_v = dict(); uber_t = dict()
+uber = dict()
 
 try:
     with open(sys.argv[1], "rt") as df:
@@ -13,28 +12,22 @@ try:
         rows = data.split("\n")
 
         for row in rows:
-            element = row.split(",")
-            d = list(map(int, element[1].split("/")))
-            day = weekday[date(d[2], d[0], d[1]).weekday()]
-            info.append(element[0] + "," + day)
-            v.append(int(element[2]))
-            t.append(int(element[3]))
+            info = row.split(",")
+            d = list(map(int, info[1].split("/")))
+            day = weekday[calendar.weekday(d[2], d[0], d[1])]
+            s = info[0] + "," + day
+
+            if s not in uber:
+                uber[s] = info[2] + "," + info[3]
+            else:
+                v_t = uber.get(s).split(",")
+                vehicles = int(v_t[0]) + int(info[2])
+                trips = int(v_t[1]) + int(info[3])
+                uber[s] = str(vehicles) + "," + str(trips)
 
 except FileNotFoundError as e:
     print("File Not Found")
 
-for i, v_info, t_info in zip(info, v, t):
-    if i not in uber_v:
-        uber_v[i] = v_info
-    elif i in uber_v:
-        uber_v[i] += v_info
-    if i not in uber_t:
-        uber_t[i] = t_info
-    elif i in uber_t:
-        uber_t[i] += t_info
-
-
 with open(sys.argv[2], "wt") as wf:
-    for i, j in uber_v.items():
-        key = i.split(",")
-        wf.write("%s,%s %d,%d\n" % (key[0], key[1], j, uber_t.get(i)))
+    for i, j in zip(uber.keys(), uber.values()):
+        wf.write("%s %s\n" % (i, j))
