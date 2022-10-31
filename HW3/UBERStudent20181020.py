@@ -4,7 +4,7 @@ import sys
 import calendar
 
 weekday = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
-uber_v = dict(); uber_t = dict()
+uber = dict()
 
 try:
     with open(sys.argv[1], "rt") as df:
@@ -13,22 +13,27 @@ try:
 
         for row in rows:
             element = row.split(",")
-            date = list(map(int, element[1].split("/")))
-            day = weekday[calendar.weekday(date[2], date[0], date[1])]
+            d = list(map(int, element[1].split("/")))
+            day = weekday[calendar.weekday(d[2], d[0], d[1])]
             info = (element[0], day)
+            values = (int(element[2]), int(element[3]))
 
-            if info not in uber_v:
-                uber_v[info] = int(element[2])
+            if info not in uber:
+                uber[info] = values
             else:
-                uber_v[info] += int(element[2])
-            if info not in uber_t:
-                uber_t[info] = int(element[3])
-            else:
-                uber_t[info] += int(element[3])
+                uber[info] += values
 
 except FileNotFoundError as e:
     print("File Not Found")
+# print(uber)
 
 with open(sys.argv[2], "wt") as wf:
-    for i, j in uber_v.items():
-        wf.write("%s,%s %d,%d\n" % (i[0], i[1], j, uber_t.get(i)))
+    for k, v in uber.items():
+        vehicles = 0; trips = 0
+        for i in range(len(v)):
+            if i % 2 == 0:
+                vehicles += v[i]
+            else:
+                trips += v[i]
+        wf.write("%s,%s %d,%d\n" % (k[0], k[1], vehicles, trips))
+        # print(k[0], k[1], vehicles, trips)
