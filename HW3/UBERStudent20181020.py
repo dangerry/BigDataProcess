@@ -7,7 +7,7 @@ weekday = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
 uber = dict()
 
 try:
-    with open("uber.txt", "rt") as df:
+    with open(sys.argv[1], "rt") as df:
         data = df.read()
         rows = data.splitlines()
 
@@ -27,7 +27,7 @@ except FileNotFoundError as e:
     print("File Not Found")
 # print(uber)
 
-with open("uberoutput.txt", "wt") as wf:
+with open(sys.argv[2], "wt") as wf:
     for k, v in uber.items():
         vehicles = 0; trips = 0
         for i in range(len(v)):
