@@ -23,7 +23,11 @@ try:
             else:
                 uber[info] += values
 
-    with open(sys.argv[2], "wt") as wf:
+except FileNotFoundError as e:
+    print("File Not Found")
+#print(uber)
+
+with open(sys.argv[2], "wt") as wf:
         for k, v in uber.items():
             vehicles = 0; trips = 0
             for i in range(len(v)):
@@ -33,7 +37,3 @@ try:
                     trips += v[i]
             wf.write("%s,%s %d,%d\n" % (k[0], k[1], vehicles, trips))
             #print("%s,%s %d,%d\n" % (k[0], k[1], vehicles, trips))
-
-except FileNotFoundError as e:
-    print("File Not Found")
-#print(uber)
